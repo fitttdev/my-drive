@@ -4,6 +4,7 @@ const router = express.Router();
 // Folder CRUD
 // POST /folders
 router.post("/folders", (req, res) => {
+  console.log("BODY", req.body);
   // res.cookie("_suzal_sesiion", "ksdnvlsdnvldsvnlsjdnvsdnvjldsnvjsdlnvsdjlvjs")
   res.status(201).json({ "msg": "Folder creation successful" });
 });

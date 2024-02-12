@@ -1,6 +1,10 @@
 const express = require("express");
 const app = express();
 const port = 4000;
+const bodyParser = require("body-parser");
+
+// Middlewares 
+app.use(bodyParser.json());
 
 // ROOT index.html
 const path = require("path");
@@ -9,6 +13,7 @@ app.get("/", (_req, res) => {
     path.join(__dirname, "public", "index.html")
   )
 });
+
 
 // Routers
 const folderRouter = require('./routers/folder.router');
