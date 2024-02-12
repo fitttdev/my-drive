@@ -14,7 +14,6 @@ app.get("/", (_req, res) => {
   )
 });
 
-
 // Routers
 const folderRouter = require('./routers/folder.router');
 app.use('', folderRouter);
