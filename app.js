@@ -1,11 +1,11 @@
-const express = require("express");
-const app = express();
+const express = require("express"); //Import express module
+const app = express();  //create a new express app
 const port = 4000;
 
 // ROOT index.html
-const path = require("path");
-app.get("/", (_req, res) => {
-  res.sendFile(
+const path = require("path"); //Import path module which is used to join paths
+app.get("/", (_req, res) => { //Route handler for the root path.
+  res.sendFile(               //sends index.html as the response using sendFile() method
     path.join(__dirname, "public", "index.html")
   )
 });
