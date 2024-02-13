@@ -1,5 +1,5 @@
 const express = require("express"); //Import express module
-const app = express();  //create a new express app
+const app = express();  //create a new express app.
 const port = 4000;
 const bodyParser = require("body-parser");
 
