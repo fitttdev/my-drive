@@ -5,7 +5,7 @@ const port = 4000;
 // ROOT index.html
 const path = require("path"); //Import path module which is used to join paths
 app.get("/", (_req, res) => { //Route handler for the root path.
-  res.sendFile(               //sends index.html as the response using sendFile() method
+  res.sendFile(               //sends index.html as the response using sendFile() method.
     path.join(__dirname, "public", "index.html")
   )
 });
