@@ -1,6 +1,10 @@
 const express = require("express"); //Import express module
 const app = express();  //create a new express app
 const port = 4000;
+const bodyParser = require("body-parser");
+
+// Middlewares 
+app.use(bodyParser.json());
 
 // ROOT index.html
 const path = require("path"); //Import path module which is used to join paths
