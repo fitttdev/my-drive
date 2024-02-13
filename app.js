@@ -18,6 +18,9 @@ app.get("/", (_req, res) => { //Route handler for the root path.
 const folderRouter = require('./routers/folder.router');
 app.use('', folderRouter);
 
+const fileRouter = require('./routers/file.router');
+app.use('', fileRouter);
+
 app.listen(port, () => {
   console.log(`App is listening on: http://localhost:${port}`);
 })
