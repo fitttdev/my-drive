@@ -1,5 +1,5 @@
 const express = require("express"); //Import express module
-const app = express();  //create a new express app
+const app = express();  //create a new express app.
 const port = 4000;
 const bodyParser = require("body-parser");
 
@@ -17,6 +17,9 @@ app.get("/", (_req, res) => { //Route handler for the root path.
 // Routers
 const folderRouter = require('./routers/folder.router');
 app.use('', folderRouter);
+
+const fileRouter = require('./routers/file.router');
+app.use('', fileRouter);
 
 app.listen(port, () => {
   console.log(`App is listening on: http://localhost:${port}`);
