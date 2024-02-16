@@ -1,36 +1,82 @@
 const express = require("express");
 const router = express.Router();
+const { PrismaClient } = require('@prisma/client');
 
-// Folder CRUD
-// POST /folders
-router.post("/folders", (req, res) => {
-  console.log("BODY", req.body);
-  // res.cookie("_suzal_sesiion", "ksdnvlsdnvldsvnlsjdnvsdnvjldsnvjsdlnvsdjlvjs")
-  res.status(201).json({ "msg": "Folder creation successful" });
+const prisma = new PrismaClient();
+
+// Create a new folder
+router.post("/folders", async (req, res) => {
+  try {
+    const createdFolder = await prisma.folder.create({
+      data: { ...req.body }
+    });
+    res.status(201).json(createdFolder);
+  } catch (error) {
+    console.error('Error creating folder:', error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
-// PUT /folders/:id
-router.put("/folders/:id", (req, res) => {
-  res.status(200).json({ "msg": "Folder updation successful" });
-})
+// Update an existing folder
+router.put("/folders/:id", async (req, res) => {
+  const folderId = parseInt(req.params.id);
+  try {
+    const updatedFolder = await prisma.folder.update({
+      where: {
+        id: folderId
+      },
+      data: {
+        // Add your folder update data here based on your schema
+      }
+    });
+    res.status(200).json(updatedFolder);
+  } catch (error) {
+    console.error('Error updating folder:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
-// GET /folders
-router.get("/folders", (req, res) => {
-  res.status(200).json(
-    { "myFolders": ["Folder 1", "Folder 2"] }
-  );
-})
+// Get all folders
+router.get("/folders", async (req, res) => {
+  try {
+    const folders = await prisma.folder.findMany();
+    res.status(200).json(folders);
+  } catch (error) {
+    console.error('Error retrieving folders:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
-// GET /folder/:id
-router.get("/folders/:id", (req, res) => {
-  res.status(200).json(
-    { "folder": "Folder 1" }
-  );
-})
+// Get specific folder by ID
+router.get("/folders/:id", async (req, res) => {
+  const folderId = parseInt(req.params.id);
+  try {
+    const folder = await prisma.folder.findUnique({
+      where: {
+        id: folderId
+      }
+    });
+    res.status(200).json(folder);
+  } catch (error) {
+    console.error('Error retrieving specific folder:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
-// DELETE /folders/:id
-router.delete("/folders/:id", (req, res) => {
-  res.status(200).json({ "msg": "Folder deletion successful" });
-})
+// Delete a folder by ID
+router.delete("/folders/:id", async (req, res) => {
+  const folderId = parseInt(req.params.id);
+  try {
+    await prisma.folder.delete({
+      where: {
+        id: folderId
+      }
+    });
+    res.status(200).json({ message: 'Folder deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting folder:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
-module.exports = router;  
+module.exports = router;
