@@ -21,6 +21,9 @@ app.use('', folderRouter);
 const fileRouter = require('./routers/file.router');
 app.use('', fileRouter);
 
+const authRouter = require('./routers/auth.router');
+app.use('', authRouter);
+
 app.listen(port, () => {
   console.log(`App is listening on: http://localhost:${port}`);
 })
