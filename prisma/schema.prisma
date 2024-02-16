@@ -9,3 +9,30 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id      Int      @id @default(autoincrement())
+  email   String   @unique
+  name    String?
+  folders Folder[]
+  profile Profile?
+}
+
+model Profile {
+  id     Int    @id @default(autoincrement())
+  name   String
+  gender String
+  age    Int
+  userId Int    @unique
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model Folder {
+  id       Int      @id @default(autoincrement())
+  name     String
+  userId   Int
+  user     User     @relation(fields: [userId], references: [id])
+  parentId Int?     @map("parent_id")
+  parent   Folder?  @relation("FolderToFolder", fields: [parentId], references: [id])
+  children Folder[] @relation("FolderToFolder")
+}
