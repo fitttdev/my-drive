@@ -1,5 +1,5 @@
 # Stateful/Session Authenticiaton
-
+Sessions enable the application to maintain user-specific state, while users interact with the application. For example, sessions allow users to authenticate once and remain signed in for future requests.
 1. **MemoryStore:** 
   This is the default session store provided by `express-session`, which 
   stores session data in memory. As mentioned earlier, it's not 
