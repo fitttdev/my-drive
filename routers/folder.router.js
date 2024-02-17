@@ -1,14 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const { PrismaClient } = require('@prisma/client');
-
 const prisma = new PrismaClient();
 
 // Create a new folder
 router.post("/folders", async (req, res) => {
   try {
     const createdFolder = await prisma.folder.create({
-      data: { ...req.body }
+      data: { userId: req.user.id, ...req.body }
     });
     res.status(201).json(createdFolder);
   } catch (error) {

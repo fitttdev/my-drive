@@ -39,7 +39,7 @@ router.post("/login", async (req, res) => {
       const isPasswordMatch = await bcrypt.compare(password, user.password);
 
       if (isPasswordMatch) {
-        res.cookie("_my_drive_session", `some-random-value-${user.id}`);
+        res.cookie("_my_drive_session", `some_random_value-${user.id}`);
         res.status(200).json({ message: "Login successful", user });
       } else {
         res.status(401).json({ error: "Invalid email or password" });
