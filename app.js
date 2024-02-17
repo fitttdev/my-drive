@@ -2,9 +2,12 @@ const express = require("express"); //Import express module
 const app = express();  //create a new express app.
 const port = 4000;
 const bodyParser = require("body-parser");
+const currentUser = require('./middlewares/current.user');
+const demo = require('./middlewares/demo');
 
 // Middlewares 
 app.use(bodyParser.json());
+app.use(demo);
 
 // ROOT index.html
 const path = require("path"); //Import path module which is used to join paths
@@ -15,14 +18,16 @@ app.get("/", (_req, res) => { //Route handler for the root path.
 });
 
 // Routers
+const authRouter = require('./routers/auth.router');
+app.use('', authRouter);
+
+app.use(currentUser);
 const folderRouter = require('./routers/folder.router');
 app.use('', folderRouter);
 
 const fileRouter = require('./routers/file.router');
 app.use('', fileRouter);
 
-const authRouter = require('./routers/auth.router');
-app.use('', authRouter);
 
 app.listen(port, () => {
   console.log(`App is listening on: http://localhost:${port}`);

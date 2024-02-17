@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 
 // Register a new user
 router.post("/register", async (req, res) => {
+  console.log("req.demo", req.demo)
   try {
     // Grab email, name, password from req.body
     const { email, name, password } = req.body;
@@ -42,7 +43,7 @@ router.post("/login", async (req, res) => {
       const isPasswordMatch = await bcrypt.compare(password, user.password);
 
       if (isPasswordMatch) {
-        res.cookie("_my_drive_session", `some-random-value-${user.id}`);
+        res.cookie("_my_drive_session", `some_random_value-${user.id}`);
         res.status(200).json({ message: "Login successful", user });
       } else {
         res.status(401).json({ error: "Invalid email or password" });
@@ -62,3 +63,26 @@ router.delete("/logout", (req, res) => {
 })
 
 module.exports = router;
+
+
+// Server/Redis
+// const sessionData = {
+//   sessionId: userId
+// }
+
+const sessionData = {
+  "27523ba6-ec91-4fb2-bc0d-76dbf3a61e7d": {
+    userId: 1,
+    email: 'ny@gmail.com'
+  }
+}
+
+// 27523ba6-ec91-4fb2-bc0d-76dbf3a61e7d
+
+// 27523ba6-ec91-4fb2-bc0d-76dbf3a61e7d
+
+// query from Redis
+// 27523ba6-ec91-4fb2-bc0d-76dbf3a61e7d = {
+//   userId: 1,
+//   email: 'ny@gmail.com'
+// }
