@@ -7,6 +7,7 @@ const currentUser = async (req, res, next) => {
     return res.status(401).json({ error: 'Not authenticated' });
   }
 
+  // some_random_value-2 => ["some_random_value", 2]
   const userId = sessionCookie.split('-')[1];
 
   try {

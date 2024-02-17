@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 
 // Register a new user
 router.post("/register", async (req, res) => {
+  console.log("req.demo", req.demo)
   try {
     const { email, name, password } = req.body;
     const hashedPassword = await hashPassword(password);
@@ -59,3 +60,26 @@ router.delete("/logout", (req, res) => {
 })
 
 module.exports = router;
+
+
+// Server/Redis
+// const sessionData = {
+//   sessionId: userId
+// }
+
+const sessionData = {
+  "27523ba6-ec91-4fb2-bc0d-76dbf3a61e7d": {
+    userId: 1,
+    email: 'ny@gmail.com'
+  }
+}
+
+// 27523ba6-ec91-4fb2-bc0d-76dbf3a61e7d
+
+// 27523ba6-ec91-4fb2-bc0d-76dbf3a61e7d
+
+// query from Redis
+// 27523ba6-ec91-4fb2-bc0d-76dbf3a61e7d = {
+//   userId: 1,
+//   email: 'ny@gmail.com'
+// }
