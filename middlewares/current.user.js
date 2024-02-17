@@ -8,8 +8,8 @@ const currentUser = async (req, res, next) => {
     return res.status(401).json({ error: 'Not authenticated' });
   }
 
-  console.log("NNNNNININN", req.session.userId)
   const userId = req.session.userId;
+  // some_random_value-2 => ["some_random_value", 2]
 
   try {
     const user = await prisma.user.findUnique({

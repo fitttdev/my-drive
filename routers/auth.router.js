@@ -15,8 +15,11 @@ router.use(session({
 
 // Register a new user
 router.post("/register", async (req, res) => {
+  console.log("req.demo", req.demo)
   try {
+    // Grab email, name, password from req.body
     const { email, name, password } = req.body;
+    // Hash password
     const hashedPassword = await hashPassword(password);
 
     const createdUser = await prisma.user.create({
@@ -44,6 +47,7 @@ router.post("/login", async (req, res) => {
     });
 
     if (user) {
+      // await bcrypt.compare(plainPassword, passwordHash);
       const isPasswordMatch = await bcrypt.compare(password, user.password);
 
       if (isPasswordMatch) {
@@ -72,3 +76,26 @@ router.delete("/logout", (req, res) => {
 })
 
 module.exports = router;
+
+
+// Server/Redis
+// const sessionData = {
+//   sessionId: userId
+// }
+
+const sessionData = {
+  "27523ba6-ec91-4fb2-bc0d-76dbf3a61e7d": {
+    userId: 1,
+    email: 'ny@gmail.com'
+  }
+}
+
+// 27523ba6-ec91-4fb2-bc0d-76dbf3a61e7d
+
+// 27523ba6-ec91-4fb2-bc0d-76dbf3a61e7d
+
+// query from Redis
+// 27523ba6-ec91-4fb2-bc0d-76dbf3a61e7d = {
+//   userId: 1,
+//   email: 'ny@gmail.com'
+// }

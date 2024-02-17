@@ -3,9 +3,11 @@ const app = express();  //create a new express app.
 const port = 4000;
 const bodyParser = require("body-parser");
 const currentUser = require('./middlewares/current.user');
+const demo = require('./middlewares/demo');
 
 // Middlewares 
 app.use(bodyParser.json());
+app.use(demo);
 
 // ROOT index.html
 const path = require("path"); //Import path module which is used to join paths
