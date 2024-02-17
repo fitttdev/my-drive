@@ -8,7 +8,9 @@ const bcrypt = require('bcrypt');
 // Register a new user
 router.post("/register", async (req, res) => {
   try {
+    // Grab email, name, password from req.body
     const { email, name, password } = req.body;
+    // Hash password
     const hashedPassword = await hashPassword(password);
 
     const createdUser = await prisma.user.create({
@@ -36,6 +38,7 @@ router.post("/login", async (req, res) => {
     });
 
     if (user) {
+      // await bcrypt.compare(plainPassword, passwordHash);
       const isPasswordMatch = await bcrypt.compare(password, user.password);
 
       if (isPasswordMatch) {
