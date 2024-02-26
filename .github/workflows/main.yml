@@ -1,0 +1,16 @@
+name: Deploy to Dev
+on:
+  workflow_dispatch:
+    inputs:
+      server:
+        description: 'Select server to deploy'
+        required: true
+        default: 'server1'
+        type: choice
+        options:
+        - server1
+jobs:
+  deploy:
+    name: Deploy to Dev
+    uses: ksdnvks
+    secrets: inherit
