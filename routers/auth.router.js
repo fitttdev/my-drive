@@ -58,8 +58,13 @@ router.post("/login", async (req, res) => {
 });
 
 
-router.delete("/logout", (req, res) => {
-  // TODO: Implement
+router.delete('/logout', async (req, res) => {
+  try {
+      res.clearCookie("login_cookie");
+      res.status(200).json({ message: 'Logout successful' });
+  } catch (error) {
+      res.status(500).json('Internal Server Error');
+  }
 })
 
 module.exports = router;
