@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node app.js"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +17,7 @@
     "prisma": "^5.9.1"
   },
   "devDependencies": {
-    "@prisma/studio": "^0.498.0"
+    "@prisma/studio": "^0.498.0",
+    "redis": "^4.6.13"
   }
 }

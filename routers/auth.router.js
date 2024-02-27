@@ -5,6 +5,8 @@ const prisma = new PrismaClient();
 const hashPassword = require("../utils/password.hasher");
 const bcrypt = require('bcrypt');
 
+const client = require('../redisSetup')
+
 // Register a new user
 router.post("/register", async (req, res) => {
   console.log("req.demo", req.demo)
@@ -30,6 +32,7 @@ router.post("/register", async (req, res) => {
 });
 
 
+
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -44,6 +47,12 @@ router.post("/login", async (req, res) => {
 
       if (isPasswordMatch) {
         res.cookie("_my_drive_session", `some_random_value-${user.id}`);
+        try {
+          await client.setEx("_my_drive_session", 3600, `some_random_value-${user.id}`); // Caching in Redis
+          console.log("Redis setEx successful");
+        } catch (redisError) {
+          console.error("Redis setEx error:", redisError);
+        }
         res.status(200).json({ message: "Login successful", user });
       } else {
         res.status(401).json({ error: "Invalid email or password" });
