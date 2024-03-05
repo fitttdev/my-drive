@@ -71,31 +71,13 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.delete("/logout", (req, res) => {
-  // TODO: Implement
+router.delete('/logout', async (req, res) => {
+  try {
+      res.clearCookie("login_cookie");
+      res.status(200).json({ message: 'Logout successful' });
+  } catch (error) {
+      res.status(500).json('Internal Server Error');
+  }
 })
 
 module.exports = router;
-
-
-// Server/Redis
-// const sessionData = {
-//   sessionId: userId
-// }
-
-const sessionData = {
-  "27523ba6-ec91-4fb2-bc0d-76dbf3a61e7d": {
-    userId: 1,
-    email: 'ny@gmail.com'
-  }
-}
-
-// 27523ba6-ec91-4fb2-bc0d-76dbf3a61e7d
-
-// 27523ba6-ec91-4fb2-bc0d-76dbf3a61e7d
-
-// query from Redis
-// 27523ba6-ec91-4fb2-bc0d-76dbf3a61e7d = {
-//   userId: 1,
-//   email: 'ny@gmail.com'
-// }
