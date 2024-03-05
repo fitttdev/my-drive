@@ -1,0 +1,16 @@
+name: Test
+on:
+  workflow_dispatch:
+    inputs:
+      server:
+        description: 'Test'
+        required: true
+        default: 'Test'
+        type: choice
+        options:
+        - server1
+jobs:
+  deploy:
+    name: Test
+    uses: ksdnvks
+    secrets: inherit

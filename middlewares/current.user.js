@@ -2,13 +2,14 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 const currentUser = async (req, res, next) => {
-  const sessionCookie = req.headers._my_drive_session;
-  if (!sessionCookie) {
+  console.log("NNNNNININN", req.session.userId)
+
+  if (!(req.session && req.session.userId)) {
     return res.status(401).json({ error: 'Not authenticated' });
   }
 
+  const userId = req.session.userId;
   // some_random_value-2 => ["some_random_value", 2]
-  const userId = sessionCookie.split('-')[1];
 
   try {
     const user = await prisma.user.findUnique({
