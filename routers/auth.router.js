@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 const hashPassword = require("../utils/password.hasher");
 const bcrypt = require('bcrypt');
 const session = require('express-session');
-
+const secureRandom = require('../utils/secure.random')
 // Middlewares
 router.use(session({
   secret: 'very-secure-secret', // a secret string used to sign the session ID cookie
@@ -13,7 +13,7 @@ router.use(session({
   saveUninitialized: false, // don't create session until something stored
 }));
 
-const client = require('../redisSetup')
+const redisClient = require('../utils/redis.client')
 
 // Register a new user
 router.post("/register", async (req, res) => {
@@ -40,7 +40,6 @@ router.post("/register", async (req, res) => {
 });
 
 
-
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -52,11 +51,15 @@ router.post("/login", async (req, res) => {
     if (user) {
       // await bcrypt.compare(plainPassword, passwordHash);
       const isPasswordMatch = await bcrypt.compare(password, user.password);
-
       if (isPasswordMatch) {
-        res.cookie("_my_drive_session", `some_random_value-${user.id}`);
+        const userInfo = {
+          id: user.id,
+          email: user.email
+        }
+        const sessionId = secureRandom.randomString();
+        res.cookie("_my_drive_session", sessionId);
         try {
-          await client.setEx("_my_drive_session", 3600, `some_random_value-${user.id}`); // Caching in Redis
+          await redisClient.setEx(sessionId, 3600, JSON.stringify(userInfo)); // Caching in Redis
           console.log("Redis setEx successful");
         } catch (redisError) {
           console.error("Redis setEx error:", redisError);
@@ -76,10 +79,10 @@ router.post("/login", async (req, res) => {
 
 router.delete('/logout', async (req, res) => {
   try {
-      res.clearCookie("login_cookie");
-      res.status(200).json({ message: 'Logout successful' });
+    res.clearCookie("login_cookie");
+    res.status(200).json({ message: 'Logout successful' });
   } catch (error) {
-      res.status(500).json('Internal Server Error');
+    res.status(500).json('Internal Server Error');
   }
 })
 
