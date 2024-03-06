@@ -4,18 +4,16 @@ const app = express();  //create a new express app.
 const bodyParser = require("body-parser");
 const currentUser = require('./middlewares/current.user');
 const demo = require('./middlewares/demo');
-const redis = require('redis');
+const redisClient = require('./utils/redis.client');
+const cookieParser = require("cookie-parser");
 
 
 const port = 4000;
-const REDIS_PORT = 6000;
-
-//Redis client setup
-const client = redis.createClient(REDIS_PORT);
 
 // Middlewares 
 app.use(bodyParser.json());
 app.use(demo);
+app.use(cookieParser()); 
 
 // ROOT index.html
 const path = require("path"); //Import path module which is used to join paths
@@ -42,6 +40,6 @@ app.listen(port, () => {
 })
 
 process.on('SIGINT', () => {
-  client.quit();
+  redisClient.quit();
   process.exit();
 });

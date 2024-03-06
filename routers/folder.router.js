@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 router.post("/folders", async (req, res) => {
   try {
     const createdFolder = await prisma.folder.create({
-      data: { userId: req.user.id, ...req.body }
+      data: { userId: req.userInfo.id, ...req.body }
     });
     res.status(201).json(createdFolder);
   } catch (error) {
