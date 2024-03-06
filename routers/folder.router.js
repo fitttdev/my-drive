@@ -25,7 +25,8 @@ router.put("/folders/:id", async (req, res) => {
         id: folderId
       },
       data: {
-        // Add your folder update data here based on your schema
+        parentId: req.body.parentId,
+        name: req.body.name
       }
     });
     res.status(200).json(updatedFolder);
@@ -55,7 +56,12 @@ router.get("/folders/:id", async (req, res) => {
         id: folderId
       }
     });
-    res.status(200).json(folder);
+
+    if (folder) {
+      res.status(200).json(folder);
+    } else {
+      res.status(404).json({message: `Folder with ID ${folderId} does not exist.`})
+    }
   } catch (error) {
     console.error('Error retrieving specific folder:', error);
     res.status(500).json({ error: 'Internal Server Error' });
