@@ -47,7 +47,7 @@ router.get("/folders", async (req, res) => {
   }
 });
 
-// Get children folder by ID
+// Get children folders inside parent
 router.get("/folders/:id/children", async (req, res) => {
   const folderId = parseInt(req.params.id);
   try {
