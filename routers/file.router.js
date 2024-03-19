@@ -12,7 +12,10 @@ router.post('/files', async (req, res) => {
         const createdFile = await prisma.file.create({
             data: { ...req.body }
         });
-        res.status(201).json("msg: File creation successful");
+        res.status(201).json({
+            msg: "File creation successful",
+            data: createdFile
+        });
     }
     catch (error) {
         console.error('Error creating file:', error);
