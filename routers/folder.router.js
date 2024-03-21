@@ -25,7 +25,8 @@ router.put("/folders/:id", async (req, res) => {
         id: folderId
       },
       data: {
-        // Add your folder update data here based on your schema
+        parentId: req.body.parentId,
+        name: req.body.name
       }
     });
     res.status(200).json(updatedFolder);
@@ -46,6 +47,41 @@ router.get("/folders", async (req, res) => {
   }
 });
 
+// Get children folders inside parent
+router.get("/folders/:id/children", async (req, res) => {
+  const folderID = parseInt(req.params.id);
+  try {
+    const folder = await prisma.folder.findUnique({
+      where: {
+        id: folderID
+      }
+    });
+
+    if (folder) {
+      try {
+        const childrenFolders = await prisma.folder.findMany({  //Children folders
+          where: { parentId: folderID }
+        });
+
+        if (childrenFolders.length > 0) { //As findMany will always return an array
+          res.status(200).json(childrenFolders);
+        } else {
+          res.status(404).json({ message: `No Folders inside parent folder with ID ${folderID}` });
+        }
+      }
+      catch (error) {
+        console.error('Error retrieving children folders:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
+    } else {
+      res.status(404).json({ message: `Folder with ID ${folderID} does not exist.` })
+    }
+  } catch (error) {
+    console.error('Error retrieving specific folder:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 // Get specific folder by ID
 router.get("/folders/:id", async (req, res) => {
   const folderId = parseInt(req.params.id);
@@ -55,7 +91,12 @@ router.get("/folders/:id", async (req, res) => {
         id: folderId
       }
     });
-    res.status(200).json(folder);
+
+    if (folder) {
+      res.status(200).json(folder);
+    } else {
+      res.status(404).json({ message: `Folder with ID ${folderId} does not exist.` })
+    }
   } catch (error) {
     console.error('Error retrieving specific folder:', error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -74,6 +115,44 @@ router.delete("/folders/:id", async (req, res) => {
     res.status(200).json({ message: 'Folder deleted successfully' });
   } catch (error) {
     console.error('Error deleting folder:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+// Get files inside folder
+router.get("/folders/:id/files", async (req, res) => {
+  const folderID = parseInt(req.params.id);
+  try {
+    const folder = await prisma.folder.findUnique({
+      where: {
+        id: folderID
+      }
+    });
+
+    if (folder) {
+      try {
+        const files = await prisma.file.findMany({  //Files inside the parent folder
+          where: {
+            folderId: folderID
+          }
+        });
+
+        if (files.length > 0) { //As findMany will always return an array
+          res.status(200).json(files);
+        } else {
+          res.status(404).json({ message: `No files inside folder with ID ${folderID}` });
+        }
+      }
+      catch (error) {
+        console.error('Error retrieving children files:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
+    } else {
+      res.status(404).json({ message: `Folder with ID ${folderID} does not exist.` })
+    }
+  } catch (error) {
+    console.error('Error retrieving specific folder:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
