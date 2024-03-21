@@ -39,7 +39,6 @@ router.post("/api/v1/register", async (req, res) => {
   }
 });
 
-
 router.post("/api/v1/login", async (req, res) => {
   try {
     const { email, password } = req.body;

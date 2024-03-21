@@ -24,18 +24,18 @@ app.get("/", (_req, res) => { //Route handler for the root path.
 });
 
 // Controllers
-const authController = require('./controllers/api/v1/auth.controller');
+const authController = require('./controllers/api/v1/auths.controller');
 app.use('', authController);
 
 app.use(currentUser); //Middleware
 
-const folderController = require('./controllers/api/v1/folder.controller');
+const folderController = require('./controllers/api/v1/folders.controller');
 app.use('', folderController);
 
-const rootController = require('./controllers/api/v1/root.controller');
+const rootController = require('./controllers/api/v1/roots.controller');
 app.use('', rootController);
 
-const fileController = require('./controllers/api/v1/file.controller');
+const fileController = require('./controllers/api/v1/files.controller');
 app.use('', fileController);
 
 app.listen(port, () => {
