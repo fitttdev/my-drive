@@ -23,7 +23,7 @@ async function seed() {
 
       let parentName = faker.person.fullName();
       console.log(`${i} creating main folder: ${parentName}`);
-      
+
       const mainFolder = await prisma.folder.create({
         data: {
           name: parentName,
@@ -31,10 +31,10 @@ async function seed() {
         },
       });
 
-      for (let j = 0; j < 10000; j++) {
+      for (let j = 0; j < 100000; j++) {
         let childName = faker.person.fullName();
         console.log(`${j} creating subfolder: ${childName} for ${parentName}`);
-        
+
         await prisma.folder.create({
           data: {
             name: childName,
