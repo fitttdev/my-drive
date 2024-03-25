@@ -3,7 +3,6 @@ const app = express();  //create a new express app.
 
 const bodyParser = require("body-parser");
 const currentUser = require('./middlewares/current.user');
-const demo = require('./middlewares/demo');
 const redisClient = require('./utils/redis.client');
 const cookieParser = require("cookie-parser");
 
@@ -12,7 +11,6 @@ const port = 4000;
 
 // Middlewares 
 app.use(bodyParser.json());
-app.use(demo);
 app.use(cookieParser()); 
 
 // ROOT index.html
